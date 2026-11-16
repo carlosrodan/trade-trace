@@ -29,7 +29,7 @@ export class JournalView extends ItemView {
   }
 
   getIcon(): string {
-    return "line-chart";
+    return "star";
   }
 
   async onOpen(): Promise<void> {

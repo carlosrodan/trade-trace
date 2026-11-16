@@ -1,4 +1,5 @@
 import { normalizePath, Notice, Plugin, TFile, TFolder } from "obsidian";
+import logoDataUrl from "../trade-trace-logo.png";
 import { JournalView, JOURNAL_VIEW_TYPE } from "./JournalView";
 import { DEFAULT_SETTINGS, JournalSettingTab, JournalSettings } from "./settings";
 import { TradeModal } from "./TradeModal";
@@ -19,7 +20,12 @@ export default class LocalTradingJournalPlugin extends Plugin {
   async onload(): Promise<void> {
     await this.loadSettings();
     this.registerView(JOURNAL_VIEW_TYPE, (leaf) => new JournalView(leaf, this));
-    this.addRibbonIcon("line-chart", "Open local trading journal", () => void this.activateView());
+    const ribbonButton = this.addRibbonIcon("star", "Open TradeTrace", () => void this.activateView());
+    ribbonButton.empty();
+    ribbonButton.createEl("img", {
+      cls: "trade-trace-ribbon-icon",
+      attr: { src: logoDataUrl, alt: "" },
+    });
     this.addCommand({ id: "open-journal", name: "Open trading journal", callback: () => void this.activateView() });
     this.addCommand({ id: "new-trade", name: "New trade", callback: () => this.openTradeModal() });
     this.addSettingTab(new JournalSettingTab(this.app, this));

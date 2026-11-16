@@ -10,6 +10,9 @@ const options = {
   sourcemap: false,
   minify: !process.argv.includes("--watch"),
   outfile: "main.js",
+  loader: {
+    ".png": "dataurl",
+  },
   logLevel: "info",
 };
 
