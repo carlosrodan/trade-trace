@@ -157,7 +157,7 @@ export class JournalView extends ItemView {
       return;
     }
     const wrapper = section.createDiv({ cls: "local-trading-journal-table-wrapper" });
-    const table = wrapper.createEl("table", { cls: "local-trading-journal-table" });
+    const table = wrapper.createEl("table", { cls: "local-trading-journal-table local-trading-journal-metrics-table" });
     const header = table.createTHead().insertRow();
     for (const label of ["Period", "Total trades", "Win rate", "Trades won", "Total RR", "Const. trades +", "Const. trades -"]) {
       header.createEl("th", { text: label });

@@ -1,4 +1,4 @@
-# Local Trading Journal
+# TradeTrace
 
 An independent, fully local Obsidian plugin for manual trade notes, screenshots, a calendar, and RR performance metrics. It has no online account system, cloud sync, broker imports, AI integration, analytics, update checks, or other network features.
 
@@ -6,7 +6,7 @@ An independent, fully local Obsidian plugin for manual trade notes, screenshots,
 
 ### Trade defaults
 
-Set the account name, symbol, and risk amount in dollars under **Settings → Local Trading Journal**. New trades use these values automatically and display them as read-only information. Existing trades keep the values they were saved with.
+Set the account name, symbol, and risk amount in dollars under **Settings → TradeTrace**. New trades use these values automatically and display them as read-only information. Existing trades keep the values they were saved with.
 
 The timeframe dropdown supports 1 m, 5 m, and 15 m. A new trade inherits the timeframe from the most recent trade, defaulting to 5 m when the journal is empty.
 
@@ -56,7 +56,7 @@ Click the line-chart button in Obsidian’s left ribbon. The command palette als
 1. Run `npm install` and `npm run build` in this directory.
 2. Create `.obsidian/plugins/local-trading-journal/` inside your vault.
 3. Copy `main.js`, `manifest.json`, and `styles.css` into that folder.
-4. Restart Obsidian or reload plugins, then enable **Local Trading Journal** under **Settings → Community plugins**.
+4. Restart Obsidian or reload plugins, then enable **TradeTrace** under **Settings → Community plugins**.
 5. Open the plugin settings and configure your account name, symbol, risk amount, and trading plan.
 
 You can also copy this whole directory into `.obsidian/plugins/local-trading-journal/` after building.

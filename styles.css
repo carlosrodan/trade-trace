@@ -421,3 +421,27 @@
     width: 100%;
   }
 }
+
+.local-trading-journal-metrics-table {
+  min-width: 44rem;
+  table-layout: fixed;
+}
+
+.local-trading-journal-metrics-table th,
+.local-trading-journal-metrics-table td {
+  vertical-align: middle;
+  white-space: normal;
+}
+
+.local-trading-journal-metrics-table th:not(:first-child),
+.local-trading-journal-metrics-table td:not(:first-child) {
+  text-align: center;
+}
+
+.local-trading-journal-metrics-table th:nth-child(1) { width: 16%; }
+.local-trading-journal-metrics-table th:nth-child(2) { width: 12%; }
+.local-trading-journal-metrics-table th:nth-child(3) { width: 12%; }
+.local-trading-journal-metrics-table th:nth-child(4) { width: 12%; }
+.local-trading-journal-metrics-table th:nth-child(5) { width: 12%; }
+.local-trading-journal-metrics-table th:nth-child(6) { width: 18%; }
+.local-trading-journal-metrics-table th:nth-child(7) { width: 18%; }

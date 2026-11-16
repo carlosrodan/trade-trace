@@ -30,7 +30,7 @@ export class JournalSettingTab extends PluginSettingTab {
   private async render(): Promise<void> {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Local Trading Journal" });
+    containerEl.createEl("h2", { text: "TradeTrace" });
     containerEl.createEl("p", {
       text: "New trades use the account, symbol, and risk below. Those values are read-only in the trade form.",
       cls: "setting-item-description",

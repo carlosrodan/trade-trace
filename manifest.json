@@ -1,9 +1,9 @@
 {
   "id": "local-trading-journal",
-  "name": "Local Trading Journal",
-  "version": "0.5.3",
+  "name": "TradeTrace",
+  "version": "0.5.4",
   "minAppVersion": "1.7.7",
   "description": "Local trade notes, image attachments, a calendar, and RR performance metrics.",
-  "author": "Local Trading Journal contributors",
+  "author": "TradeTrace contributors",
   "isDesktopOnly": false
 }
