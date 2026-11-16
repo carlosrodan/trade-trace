@@ -1,0 +1,17 @@
+{
+  "name": "local-trading-journal",
+  "version": "0.5.3",
+  "private": true,
+  "description": "A minimal, fully local trading journal for Obsidian.",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc -noEmit && node esbuild.config.mjs",
+    "dev": "node esbuild.config.mjs --watch",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "obsidian": "^1.13.1",
+    "typescript": "^5.9.3"
+  }
+}
