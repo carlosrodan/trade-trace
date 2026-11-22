@@ -12,7 +12,7 @@ The timeframe dropdown supports 1 m, 5 m, and 15 m. A new trade inherits the ent
 
 ### Trade form
 
-- Entry date and time in **DD/MM/YY HH:mm** format with 24-hour time, plus **Now** and calendar buttons. The calendar button opens the native date-time picker and synchronizes the formatted text field. Markdown storage retains the existing internal date format for compatibility.
+- Entry date and time in **DD/MM/YY HH:mm** format with 24-hour time, plus **Now** and calendar buttons. The calendar button opens a date picker with 00–23 hour and 00–59 minute selectors, then synchronizes the formatted text field. Markdown storage retains the existing internal date format for compatibility.
 - Optional duration and timeframe.
 - Long/short direction dropdown, defaulting to Long.
 - Optional entry price, exit price, RR, and maximum RR. RR can be entered by itself while both prices remain blank.

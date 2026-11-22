@@ -1,4 +1,5 @@
 import { App, Modal, Notice, Setting, TextComponent, TFile } from "obsidian";
+import { DateTimePickerModal } from "./DateTimePickerModal";
 import {
   calculateProfitLoss,
   formatEntryTime,
@@ -50,32 +51,18 @@ export class TradeModal extends Modal {
       .setName("Entry time")
       .setDesc("DD/MM/YY, 24-hour time.")
       .setClass("trade-trace-entry-time-setting");
-    const picker = entryTimeSetting.controlEl.createEl("input", {
-      cls: "trade-trace-native-datetime-picker",
-      attr: { type: "datetime-local", "aria-hidden": "true", tabindex: "-1" },
-    });
-    picker.value = this.values.entryTime;
     let setEntryTime = (value: string): void => {
       this.values.entryTime = value;
-      picker.value = value;
     };
-    picker.addEventListener("change", () => {
-      if (picker.value) setEntryTime(picker.value);
-    });
     entryTimeSetting.addText((text) => {
       text.inputEl.type = "text";
       text.inputEl.maxLength = 14;
       text.inputEl.spellcheck = false;
       text.setPlaceholder("DD/MM/YY HH:mm")
         .setValue(formatEntryTime(this.values.entryTime))
-        .onChange((value) => {
-          const parsed = parseEntryTimeInput(value);
-          this.values.entryTime = parsed ?? value;
-          if (parsed) picker.value = parsed;
-        });
+        .onChange((value) => (this.values.entryTime = parseEntryTimeInput(value) ?? value));
       setEntryTime = (value) => {
         this.values.entryTime = value;
-        picker.value = value;
         text.setValue(formatEntryTime(value));
       };
     });
@@ -84,12 +71,7 @@ export class TradeModal extends Modal {
     );
     entryTimeSetting.addButton((button) =>
       button.setIcon("calendar").setTooltip("Choose date and time").onClick(() => {
-        try {
-          picker.showPicker();
-        } catch {
-          picker.focus();
-          picker.click();
-        }
+        new DateTimePickerModal(this.app, this.values.entryTime, setEntryTime).open();
       }),
     );
 
