@@ -1,8 +1,10 @@
 import { App, Modal, Notice, Setting, TextComponent, TFile } from "obsidian";
 import {
   calculateProfitLoss,
+  formatEntryTime,
   formatProfitLoss,
   nowInputValue,
+  parseEntryTimeInput,
   PendingImage,
   TradeTimeframe,
   TradeValues,
@@ -44,16 +46,22 @@ export class TradeModal extends Modal {
     this.addDefaultValue(defaults, "Symbol", this.values.symbol || "Not configured");
     this.addDefaultValue(defaults, "Risk", `$${this.values.riskAmount.toFixed(2)}`);
 
-    const entryTimeSetting = new Setting(this.contentEl).setName("Entry time");
+    const entryTimeSetting = new Setting(this.contentEl)
+      .setName("Entry time")
+      .setDesc("DD/MM/YY, 24-hour time.");
     let setEntryTime = (value: string): void => {
       this.values.entryTime = value;
     };
     entryTimeSetting.addText((text) => {
-      text.inputEl.type = "datetime-local";
-      text.setValue(this.values.entryTime).onChange((value) => (this.values.entryTime = value));
+      text.inputEl.type = "text";
+      text.inputEl.maxLength = 14;
+      text.inputEl.spellcheck = false;
+      text.setPlaceholder("DD/MM/YY HH:mm")
+        .setValue(formatEntryTime(this.values.entryTime))
+        .onChange((value) => (this.values.entryTime = parseEntryTimeInput(value) ?? value));
       setEntryTime = (value) => {
         this.values.entryTime = value;
-        text.setValue(value);
+        text.setValue(formatEntryTime(value));
       };
     });
     entryTimeSetting.addButton((button) =>
