@@ -37,6 +37,7 @@ export interface TradeDefaults {
   symbol: string;
   riskAmount: number;
   timeframe: TradeTimeframe;
+  entryTime?: string;
 }
 
 const FRONTMATTER_PATTERN = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
@@ -55,7 +56,7 @@ export function defaultTradeValues(defaults: TradeDefaults): TradeValues {
     accountName: defaults.accountName,
     symbol: defaults.symbol,
     riskAmount: defaults.riskAmount,
-    entryTime: nowInputValue(),
+    entryTime: defaults.entryTime ?? nowInputValue(),
     duration: "",
     direction: "long",
     timeframe: defaults.timeframe,
@@ -195,7 +196,18 @@ export function formatProfitLoss(value: number | null): string {
 }
 
 export function formatEntryTime(value: string): string {
-  return value.replace("T", " ");
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+  if (!match) return value;
+  const [year, month, day, hours, minutes] = match.slice(1);
+  return `${day}/${month}/${year.slice(2)} ${hours}:${minutes}`;
+}
+
+export function parseEntryTimeInput(value: string): string | null {
+  const match = value.trim().match(/^(\d{2})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/);
+  if (!match) return null;
+  const [day, month, shortYear, hours, minutes] = match.slice(1);
+  const entryTime = `20${shortYear}-${month}-${day}T${hours}:${minutes}`;
+  return isValidLocalDateTime(entryTime) ? entryTime : null;
 }
 
 export function tradeDateKey(trade: Pick<TradeValues, "entryTime">): string {

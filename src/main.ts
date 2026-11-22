@@ -5,6 +5,7 @@ import { DEFAULT_SETTINGS, JournalSettingTab, JournalSettings } from "./settings
 import { TradeModal } from "./TradeModal";
 import {
   defaultTradeValues,
+  nowInputValue,
   parseTradeNote,
   PendingImage,
   serializeTrade,
@@ -172,11 +173,13 @@ export default class LocalTradingJournalPlugin extends Plugin {
         images: trade.images,
       };
     } else {
+      const previous = await this.previousTradeDefaults();
       values = defaultTradeValues({
         accountName: this.settings.accountName,
         symbol: this.settings.symbol,
         riskAmount: this.settings.riskAmount,
-        timeframe: await this.previousTimeframe(),
+        timeframe: previous.timeframe,
+        entryTime: previous.entryTime,
       });
     }
 
@@ -186,13 +189,17 @@ export default class LocalTradingJournalPlugin extends Plugin {
     }).open();
   }
 
-  private async previousTimeframe(): Promise<TradeTimeframe> {
+  private async previousTradeDefaults(): Promise<{ timeframe: TradeTimeframe; entryTime: string }> {
     const files = this.app.vault.getMarkdownFiles().filter((file) => this.isJournalFile(file));
     const trades = (
       await Promise.all(files.map(async (file) => parseTradeNote(await this.app.vault.cachedRead(file), file)))
     ).filter((trade): trade is NonNullable<typeof trade> => trade !== null);
     trades.sort((a, b) => b.entryTime.localeCompare(a.entryTime));
-    return trades[0]?.timeframe ?? "5m";
+    const now = nowInputValue();
+    return {
+      timeframe: trades[0]?.timeframe ?? "5m",
+      entryTime: trades[0] ? `${trades[0].entryTime.slice(0, 10)}T${now.slice(11)}` : now,
+    };
   }
 
   private async savePendingImages(baseName: string, images: PendingImage[]): Promise<string[]> {

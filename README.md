@@ -8,11 +8,11 @@ An independent, fully local Obsidian plugin for manual trade notes, screenshots,
 
 Set the account name, symbol, and risk amount in dollars under **Settings → TradeTrace**. New trades use these values automatically and display them as read-only information. Existing trades keep the values they were saved with.
 
-The timeframe dropdown supports 1 m, 5 m, and 15 m. A new trade inherits the timeframe from the most recent trade, defaulting to 5 m when the journal is empty.
+The timeframe dropdown supports 1 m, 5 m, and 15 m. A new trade inherits the entry date and timeframe from the most recent trade while using the current clock time. With no previous trades, it uses the current date and 5 m.
 
 ### Trade form
 
-- Entry date and time, with a **Now** button.
+- Entry date and time in **DD/MM/YY HH:mm** format with 24-hour time, plus **Now** and calendar buttons. The calendar button opens the native date-time picker and synchronizes the formatted text field. Markdown storage retains the existing internal date format for compatibility.
 - Optional duration and timeframe.
 - Long/short direction dropdown, defaulting to Long.
 - Optional entry price, exit price, RR, and maximum RR. RR can be entered by itself while both prices remain blank.
