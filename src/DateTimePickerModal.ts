@@ -21,10 +21,47 @@ export class DateTimePickerModal extends Modal {
   onOpen(): void {
     this.titleEl.setText("Choose date and time");
 
-    new Setting(this.contentEl).setName("Date").addText((text) => {
-      text.inputEl.type = "date";
-      text.setValue(this.date).onChange((value) => (this.date = value));
+    const dateSetting = new Setting(this.contentEl)
+      .setName("Date")
+      .setDesc("DD/MM/YYYY.")
+      .setClass("trade-trace-date-picker-setting");
+    const picker = dateSetting.controlEl.createEl("input", {
+      cls: "trade-trace-native-date-picker",
+      attr: { type: "date", "aria-hidden": "true", tabindex: "-1" },
     });
+    picker.value = this.date;
+    let setDate = (value: string): void => {
+      this.date = value;
+      picker.value = value;
+    };
+    picker.addEventListener("change", () => {
+      if (picker.value) setDate(picker.value);
+    });
+    dateSetting.addText((text) => {
+      text.inputEl.type = "text";
+      text.inputEl.maxLength = 10;
+      text.inputEl.spellcheck = false;
+      text.setPlaceholder("DD/MM/YYYY").setValue(formatDateInput(this.date)).onChange((value) => {
+        const parsed = parseDateInput(value);
+        this.date = parsed ?? value;
+        if (parsed) picker.value = parsed;
+      });
+      setDate = (value) => {
+        this.date = value;
+        picker.value = value;
+        text.setValue(formatDateInput(value));
+      };
+    });
+    dateSetting.addButton((button) =>
+      button.setIcon("calendar").setTooltip("Choose date").onClick(() => {
+        try {
+          picker.showPicker();
+        } catch {
+          picker.focus();
+          picker.click();
+        }
+      }),
+    );
 
     const time = new Setting(this.contentEl).setName("Time").setDesc("24-hour time.");
     time.addDropdown((dropdown) => {
@@ -45,8 +82,8 @@ export class DateTimePickerModal extends Modal {
 
     new Setting(this.contentEl).addButton((button) =>
       button.setButtonText("Set date and time").setCta().onClick(() => {
-        if (!this.date) {
-          new Notice("Choose a date.");
+        if (!isValidCanonicalDate(this.date)) {
+          new Notice("Enter a valid date in DD/MM/YYYY format.");
           return;
         }
         this.onSelect(`${this.date}T${this.hour}:${this.minute}`);
@@ -58,4 +95,24 @@ export class DateTimePickerModal extends Modal {
   onClose(): void {
     this.contentEl.empty();
   }
+}
+
+function formatDateInput(value: string): string {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return match ? `${match[3]}/${match[2]}/${match[1]}` : value;
+}
+
+function parseDateInput(value: string): string | null {
+  const match = value.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return null;
+  const date = `${match[3]}-${match[2]}-${match[1]}`;
+  return isValidCanonicalDate(date) ? date : null;
+}
+
+function isValidCanonicalDate(value: string): boolean {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return false;
+  const [year, month, day] = match.slice(1).map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }

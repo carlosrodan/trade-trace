@@ -461,3 +461,20 @@
 .trade-trace-entry-time-setting .setting-item-control {
   flex-wrap: wrap;
 }
+
+.trade-trace-date-picker-setting .setting-item-control {
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.trade-trace-native-date-picker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
